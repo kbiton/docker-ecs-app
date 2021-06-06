@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  myapp:
+    image: localhost:5000/myproject/myapp:latest
+    build: ./

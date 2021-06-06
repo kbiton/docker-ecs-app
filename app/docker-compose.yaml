@@ -1,0 +1,10 @@
+x-aws-vpc: ${AWS_VPC}
+# x-aws-cluster: ${AWS_ECS_CLUSTER}
+x-aws-loadbalancer: ${AWS_ELB}
+
+services:
+  myapp:
+    image: ${DOCKER_REGISTRY}/projectmayhem/frontend
+    build: ./
+    ports:
+      - "80:80"

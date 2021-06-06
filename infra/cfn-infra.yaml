@@ -232,22 +232,7 @@ Resources:
         - !Ref PublicSubnetTwo
 
   # ECS Resources
-  ECSCluster:
-    Type: AWS::ECS::Cluster
-    Properties:
-      ClusterName: !Join ["-",[!Sub '${AWS::StackName}', 'cluster']]
-      ClusterSettings:
-        - Name: containerInsights
-          Value: enabled
-      CapacityProviders:
-        - FARGATE
-        - FARGATE_SPOT
-      DefaultCapacityProviderStrategy:
-        - CapacityProvider: FARGATE
-          Weight: 1
-        - CapacityProvider: FARGATE_SPOT
-          Weight: 2
-
+  
   # ECS Task Execution Role
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
@@ -398,9 +383,6 @@ Outputs:
   VpcId:
     Description: The ID of the VPC that this stack is deployed in
     Value: !Ref 'VPC'
-  ClusterName:
-    Description: The name of the ECS cluster
-    Value: !Ref 'ECSCluster'
   LoadbalancerId:
     Description: The Demo App Loadbalancer Arn
     Value: !Ref 'DemoLoadbalancer'

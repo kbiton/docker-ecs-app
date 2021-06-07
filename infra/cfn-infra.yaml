@@ -232,6 +232,12 @@ Resources:
         - !Ref PublicSubnetTwo
 
   # ECS Resources
+  MyRepository: 
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: "dev/prjneo/frontend"
+      ImageScanningConfiguration: 
+        ScanOnPush: "true"
   
   # ECS Task Execution Role
   ECSTaskExecutionRole:
@@ -386,6 +392,9 @@ Outputs:
   LoadbalancerId:
     Description: The Demo App Loadbalancer Arn
     Value: !Ref 'DemoLoadbalancer'
+  LoadbalancerName:
+    Description: The Demo App Loadbalancer Name 
+    Value: !Sub "${AWS::StackName}-alb"
   LoadbalancerEndpoint:
     Description: The Demo App Loadbalancer Endpoint
     Value: !Join

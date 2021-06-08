@@ -76,8 +76,10 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
  * Deploy the application to Amazon ECR
 
    `docker context ls`
+
    `docker context use myecscontext`
-   `docker context ls`  | Validate that the ECR context is active (* mark)
+
+   `docker context ls` | Validate that the ECR context is active (* mark)
 
    `docker compose up`  | Mind the "docker compose up and NOT "docker-compose up"
 
@@ -94,8 +96,8 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
  * While the docker context points to your ECS based context
 
     cd app/ 
-    docker compose down | This will tear down the docker ECS cloudformation stack    
-    aws cloudformation delete-stack —stack-name infra-docker-ecs | This will tear down the infra stack
+    `docker compose down` | This will tear down the docker ECS cloudformation stack    
+    `aws cloudformation delete-stack —stack-name infra-docker-ecs` | This will tear down the infra stack
 
            
  * Remove the ECR Image(s) and Repo

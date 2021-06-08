@@ -95,14 +95,17 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
 
  * While the docker context points to your ECS based context
 
-    cd app/ 
-    `docker compose down` | This will tear down the docker ECS cloudformation stack    
+    `cd app/ `
+
+    `docker compose down` | This will tear down the docker ECS cloudformation stack
+
     `aws cloudformation delete-stack —stack-name infra-docker-ecs` | This will tear down the infra stack
 
            
  * Remove the ECR Image(s) and Repo
 
-    aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest
-    aws ecr delete-repository --repository-name "dev/prjneo/frontend"
+    `aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest`
+
+    `aws ecr delete-repository --repository-name "dev/prjneo/frontend"`
 
 

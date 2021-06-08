@@ -1,6 +1,8 @@
 # Docker-Compose App → Amazon ECS App
 
-*NOTE* : This demo/code is for demonstration purpose only, you will incur costs please remember to clean resources.
+*NOTE* : This demo/code is not-production ready, its sole goal is to let you experiment.
+
+You will incur costs please remember to clean resources.
 
 From local docker build, using the docker-compose construct to an ECS App 
 

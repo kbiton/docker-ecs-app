@@ -125,7 +125,8 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
            
  * Remove the ECR Image(s) and Repo
 
-        `aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest`
-        `aws ecr delete-repository --repository-name “dev/prjneo/frontend”`
+     `aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest`
+
+     `aws ecr delete-repository --repository-name “dev/prjneo/frontend”`
 
 

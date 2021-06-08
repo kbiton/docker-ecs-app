@@ -1,5 +1,7 @@
 # Docker-Compose App → Amazon ECS App
 
+*NOTE* : This demo/code is for demonstration purpose only, you will incur costs please remember to clean resources.
+
 From local docker build, using the docker-compose construct to an ECS App 
 
 This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/deploy-applications-on-amazon-ecs-using-docker-compose/
@@ -34,6 +36,10 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
     This should return the default and myecscontext contexts (the default is used for local deployment)
     Mind the * this is the active context
 
+ * Clone the Repo
+
+   git clone https://github.com/kbiton/docker-ecs-app.git
+
  * Deploy the Infra stack: This is an opinionated stack that deploys a VPC, ALB, ECS Repo and few VPC Endpoints, Feel free to customize as you see fit.
     
     `cd infra/`
@@ -44,31 +50,44 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
     
  * Get the required outputs for the docker compose ecs integration
     
-    `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[0].OutputValue"
-    Output should be similar  → "vpc-xxxxxxxxxxxxxxxxx"`
+    `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[0].OutputValue"`
 
-    `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[3].OutputValue"
-    Output should be similar  → "infra-docker-ecs-alb"`
+    Output should be similar  → "vpc-xxxxxxxxxxxxxxxxx"
+
+    `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[3].OutputValue"`
+
+    Output should be similar  → "infra-docker-ecs-alb"
 
     
- * Edit `app/env.sh` and populate the values, complete the ECR endpoint with your AWS account ID
-   Source the env: `. app/env.sh`
+ * Edit `app/env.sh` and populate the (VPC and Load Balancer Vars) values.
+
+   Complete the ECR endpoint with your AWS account ID
+   
+   Source the env:
+
+   `. app/env.sh`
     
  * This demo uses Amazon ECR (A repository has been created using the infra cloudformation stack)
+
     *note*: Your IAM user should be able to push/pull images.
+
     Authenticate your Docker client with the registry: 
 
     `aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin
     ${DOCKER_REGISTRY}`
+
     I prefer the ECR credentials helper: https://github.com/awslabs/amazon-ecr-credential-helper
 
  * Build and push the image
 
    `docker context ls`
+
    `docker context use default`
+
    `docker context ls`  | Validate that the default context is active (* mark)
 
    `docker-compose build`
+
    `docker-compose push`
 
    If successful, your image should be build locally and pushed to the ECR Repo
@@ -79,15 +98,17 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
 
    `docker context use myecscontext`
 
-   `docker context ls` | Validate that the ECR context is active (* mark)
+   `docker context ls`  | Validate that the ECR context is active (* mark)
 
    `docker compose up`  | Mind the "docker compose up and NOT "docker-compose up"
 
    At this point docker reads the compose file and creates a Cloudformation template (on the fly) then deploys it to AWS.
 
- * Head over to the LB endpoint
+   Head over to the AWS Console and examine the Cloudformation stack
 
-   `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[1].OutputValue`
+ * Grab the LB endpoint:
+
+   `aws cloudformation describe-stacks --stack-name infra-docker-ecs  --query "Stacks[0].Outputs[1].OutputValue"`
 
 
 ## Cleanup
@@ -95,17 +116,16 @@ This demo is inspired by this blog: https://aws.amazon.com/blogs/containers/depl
 
  * While the docker context points to your ECS based context
 
-    `cd app/ `
+    `cd app/` 
 
-    `docker compose down` | This will tear down the docker ECS cloudformation stack
+    `docker compose down` | This will tear down the docker ECS cloudformation stack    
 
-    `aws cloudformation delete-stack --stack-name infra-docker-ecs` | This will tear down the infra stack
+    `aws cloudformation delete-stack —stack-name infra-docker-ecs` | This will tear down the infra stack
 
            
  * Remove the ECR Image(s) and Repo
 
-    `aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest`
-
-    `aws ecr delete-repository --repository-name "dev/prjneo/frontend"`
+        `aws ecr batch-delete-image --repository-name "dev/prjneo/frontend" --image-ids imageTag=latest`
+        `aws ecr delete-repository --repository-name “dev/prjneo/frontend”`
 
 
